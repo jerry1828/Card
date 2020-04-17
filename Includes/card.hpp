@@ -30,14 +30,15 @@ class Card {
 
   private :
 
-    Number      m_number;
-    Color       m_color;
-    Type        m_type;
-    Shape       m_form;
-    Symbol      m_symbol;
-    Figure      m_figure;
+    Number        m_number;
+    Color         m_color;
+    Type          m_type;
+    Shape         m_form;
+    Symbol        m_symbol;
+    Figure        m_figure;
 
-    std::string m_name; //TODO, omitted
+    std::string   m_name; //TODO, omitted
+    static UInt m_realnoc;
 
   private :
 
@@ -51,6 +52,16 @@ class Card {
                const Shape  _shape,
                const Symbol _symb,
                const Figure _fig);
+
+    //to be called pour unique card
+    //construction
+    // n * 54 cards total
+    //n : number of packs of cards
+    void Build(const Number _num,
+               const UInt   _numpack,
+               const Color  _colo,
+                     Symbol _symb,
+                     Figure _fig);
 
     void Build(const Number _num,
                const Color  _colo,
@@ -96,7 +107,8 @@ class Card {
 
     //the followings are replacement methods
     //working with all Card attributes
-    void Copy(const Card& _card); //considered the fact that a card is unique
+    //TODO thread safety
+    void Copy(const Card& _card); //consider the fact that a card is unique
     void Move(Card&& _card); //TODO TOIM
 
   public :
@@ -109,6 +121,12 @@ class Card {
                Symbol _symbol,
                Figure _figure = Figure::None);
 
+    //handle the case with a figure
+    Card(const Number _num,
+         const UInt   _numpack,
+         const Color  _colo,
+               Symbol _symb,
+               Figure _fig = Figure::None);
 
     Card(const Number _number,
          const Color  _color,
@@ -121,8 +139,9 @@ class Card {
     //for Card card{}; decl. init.
   private :
 
-    Card(const Card&); //TODO //PRI
-    Card(Card&&);
+    //Card(const Card&); //TODO //PRI
+  public :
+    //Card(Card&&); // needed with new operator ??
 
   public :
 
@@ -134,6 +153,7 @@ class Card {
     constexpr Type GetType() const {   return m_type; }
     constexpr Shape GetShape() const { return m_form; }
 
+    constexpr UInt GetRealnoc() const { return m_realnoc; }
     //TOFI TOIM
     //coding rules, setters can not change 2 attr.
     void SetNumber(const Number _numb) {
@@ -157,8 +177,8 @@ class Card {
 
     bool operator==(const Card& _card);
 
-    //assign a simple copy
-    Card operator=(const Card&);
+    //assign a simple copy...?
+    Card& operator=(const Card&);
 };
 
 

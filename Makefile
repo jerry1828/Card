@@ -35,7 +35,7 @@ $(DYNTARGET) :
 
 $(STATICTARGET) :
 	$(CPPCOMPILER) $(CPPEleven) $(STRICTOPTIONS) $(PLANGUAGES) \
-        -S $(SOURCES) $(STATICLIBOPTIONS) -IIncludes -o libcard.a
+        -S $(SOURCES) $(STATICLIBOPTIONS) -mandroid -IIncludes -o libcard.a
 
 
 $(TARGET) :
@@ -47,4 +47,4 @@ $(TARGET) :
 
 
 Moov :
-	mv libcard.so /usr/local/lib64; mv libcard.a /usr/local/lib64
+	mv libcard.so /usr/local/lib64; mv libcard.a /usr/local/lib64; cp Includes/cardcst.hpp Includes/card.hpp /usr/local/include

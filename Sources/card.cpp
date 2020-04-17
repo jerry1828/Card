@@ -1,7 +1,15 @@
 #include "card.hpp"
 
+#include "cardcst.hpp"
+
+
+#include <vector>
 
 using namespace std;
+
+
+UInt
+Card::m_realnoc = 0;
 
 
 Card::Card() {
@@ -17,6 +25,22 @@ Card::Card(const Number _numb,
   Init();
 
   Build(_numb,
+        _colo,
+        _symb,
+        _fig);
+}
+
+
+Card::Card(const Number _num,
+           const UInt   _numpack,
+           const Color  _colo,
+                 Symbol _symb,
+                 Figure _fig) {
+
+  Init();
+
+  Build(_num,
+        _numpack,
         _colo,
         _symb,
         _fig);
@@ -77,6 +101,33 @@ Card::Build(const Number _num,
   m_color  = _colo;
   m_symbol = _symb;
   m_figure = _fig;
+
+  ++Card::m_realnoc;
+}
+
+
+void
+Card::Build(const Number _num,
+            const UInt   _numpack,
+            const Color  _colo,
+                  Symbol _symb,
+                  Figure _fig) {
+
+  //consistency
+  m_number = _num;
+  m_color  = _colo;
+  m_symbol = _symb;
+  m_figure = _fig;
+
+  static vector<Card> maxicards{};
+  maxicards[Card::m_realnoc] = (*this);
+
+  const UInt crnc = Card::m_realnoc;
+  if (crnc > (_numpack * packcards)) {
+    throw("The number of cards built is over the authorized number");
+  }
+
+  ++Card::m_realnoc;
 }
 
 
@@ -95,6 +146,8 @@ Card::Build(const Number _num,
   m_form   = _shape,
   m_symbol = _symb;
   m_figure = _fig;
+
+  ++Card::m_realnoc;
 }
 
 
@@ -315,44 +368,158 @@ bool Card::operator==(const Card& _card) {
 }
 
 
-ostream& operator<<(ostream& _os, const Number _numb) {
+Card& Card::operator=(const Card& _card) {
 
-  _os << _numb;
+  if (this == &_card) {
+    return *this;
+  }
+
+  Copy(_card);
+
+  return (*this);
+}
+
+
+//all attri.
+void Card::Copy(const Card& _card) {
+
+  m_number = _card.m_number;
+  m_color  = _card.m_color;
+  m_type   = _card.m_type;
+  m_form   = _card.m_form;
+  m_symbol = _card.m_symbol;
+  m_figure = _card.m_figure;
+}
+
+
+ostream& operator<<(ostream& _os, const Number _number) {
+
+  switch(_number) {
+    case Number::One :
+      _os << static_cast<UInt>(Number::One);
+     break;
+    case Number::Two :
+      _os << static_cast<UInt>(Number::Two);
+     break;
+    case Number::Three :
+      _os << static_cast<UInt>(Number::Three);
+     break;
+    case Number::Four :
+      _os << static_cast<UInt>(Number::Four);
+     break;
+    case Number::Five :
+      _os << static_cast<UInt>(Number::Five);
+     break;
+    case Number::Six :
+      _os << static_cast<UInt>(Number::Six);
+     break;
+    case Number::Seven :
+      _os << static_cast<UInt>(Number::Seven);
+     break;
+    case Number::Eight :
+      _os << static_cast<UInt>(Number::Eight);
+     break;
+    case Number::Nine :
+      _os << static_cast<UInt>(Number::Nine);
+     break;
+    case Number::Ten :
+      _os << static_cast<UInt>(Number::Ten);
+     break;
+  }
+
   return _os;
 }
 
 
 ostream& operator<<(ostream& _os, const Color _colo) {
 
-  _os << _colo;
+  switch(_colo) {
+    case Color::Black :
+      _os << static_cast<UInt>(Color::Black);
+    break;
+    case Color::Red :
+      _os << static_cast<UInt>(Color::Red);
+    break;
+}
+
   return _os;
 }
 
 
 ostream& operator<<(ostream& _os, const Type _typ) {
 
-  _os << _typ;
+  switch(_typ) {
+
+    case Type::Paper :
+      _os << static_cast<UInt>(Type::Paper);
+    break;
+    case Type::Plastic :
+      _os << static_cast<UInt>(Type::Plastic);
+    break;
+  }
+
   return _os;
 }
 
 
 ostream& operator<<(ostream& _os, const Shape _form) {
 
-  _os << _form;
+  switch (_form) {
+
+    case Shape::RectRounded :
+      _os << static_cast<UInt>(Shape::RectRounded);
+    break;
+
+  }
   return _os;
 }
 
 
 ostream& operator<<(ostream& _os, const Symbol _symb) {
 
-  _os << _symb;
+  switch(_symb) {
+
+    case Symbol::Pique :
+      _os << static_cast<UInt>(Symbol::Pique);
+    break;
+    case Symbol::Trefle :
+      _os << static_cast<UInt>(Symbol::Trefle);
+    break;
+    case Symbol::Square :
+      _os << static_cast<UInt>(Symbol::Square);
+    break;
+    case Symbol::Coeur :
+      _os << static_cast<UInt>(Symbol::Coeur);
+    break;
+
+  }
+
   return _os;
 }
 
 
 ostream& operator<<(ostream& _os, const Figure _fig) {
 
-  _os << _fig;
+  switch(_fig) {
+
+    case Figure::None :
+      _os << static_cast<UInt>(Figure::None);
+    break;
+    case Figure::Queen :
+      _os << static_cast<UInt>(Figure::Queen);
+    break;
+    case Figure::JCommand :
+      _os << static_cast<UInt>(Figure::JCommand);
+    break;
+    case Figure::King :
+      _os << static_cast<UInt>(Figure::King);
+    break;
+    case Figure::Lion :
+      _os << static_cast<UInt>(Figure::Lion);
+    break;
+
+  }
+
   return _os;
 }
 

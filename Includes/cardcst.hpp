@@ -4,6 +4,7 @@
 //typedefs
 using UInt = unsigned int;
 
+
 //followings are prefixed with Card
 //thus fixing class naming conflicts
 enum class CardShape {
@@ -67,5 +68,8 @@ enum class CardSymbol {
   Coeur,
   Pique
 };
+
+
+constexpr UInt packcards = 54;
 
 #endif
